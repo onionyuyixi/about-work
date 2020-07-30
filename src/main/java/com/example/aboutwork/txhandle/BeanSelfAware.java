@@ -1,14 +1,8 @@
 package com.example.aboutwork.txhandle;
 
-public class BeanSelfAware {
+import lombok.Data;
 
-    BeanSelfAware self;
-
-    public void setSelf(Object target) {
-        this.self = (BeanSelfAware) target;
-    }
-
-    public BeanSelfAware getSelf() {
-        return self;
-    }
+@Data
+public class BeanSelfAware<T extends BeanSelfAware> {
+    T self;
 }

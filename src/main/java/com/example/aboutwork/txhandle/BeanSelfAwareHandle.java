@@ -11,7 +11,7 @@ public class BeanSelfAwareHandle extends InstantiationAwareBeanPostProcessorAdap
         if (bean instanceof BeanSelfAware) {
             System.err.println("开始后处理");
             BeanSelfAware beanSelfAware = (BeanSelfAware) bean;
-            beanSelfAware.setSelf(bean);
+            beanSelfAware.setSelf((BeanSelfAware) bean);
             return bean;
         }
         return super.postProcessAfterInitialization(bean, beanName);
