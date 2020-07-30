@@ -1,6 +1,6 @@
 package com.example.aboutwork.service;
 
-public interface TxService  {
+public interface TxHandleService  {
 
 
     void txA();

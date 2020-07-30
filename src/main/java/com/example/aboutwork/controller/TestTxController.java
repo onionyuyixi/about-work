@@ -1,7 +1,7 @@
 package com.example.aboutwork.controller;
 
 
-import com.example.aboutwork.service.TxService;
+import com.example.aboutwork.service.TxHandleService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ public class TestTxController {
 
 
     @Autowired
-    TxService txService;
+    TxHandleService txService;
 
     @GetMapping("/tx")
     public Object tx() throws Exception {
