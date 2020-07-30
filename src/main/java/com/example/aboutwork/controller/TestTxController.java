@@ -1,7 +1,7 @@
-package com.example.aboutworker.controller;
+package com.example.aboutwork.controller;
 
 
-import com.example.aboutworker.service.TxService;
+import com.example.aboutwork.service.TxService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

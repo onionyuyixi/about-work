@@ -1,7 +1,7 @@
-package com.example.aboutworker.listener;
+package com.example.aboutwork.listener;
 
 
-import com.example.aboutworker.event.AfterCommitEvent;
+import com.example.aboutwork.event.AfterCommitEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;

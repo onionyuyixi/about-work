@@ -1,4 +1,4 @@
-package com.example.aboutworker.event;
+package com.example.aboutwork.event;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;

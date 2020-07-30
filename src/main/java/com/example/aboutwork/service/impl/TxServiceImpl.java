@@ -1,13 +1,12 @@
-package com.example.aboutworker.service.impl;
+package com.example.aboutwork.service.impl;
 
-import com.example.aboutworker.event.AfterCommitEvent;
-import com.example.aboutworker.model.PdBundleItemSku;
-import com.example.aboutworker.repository.PdBundleItemSkuRepository;
-import com.example.aboutworker.service.TxService;
-import com.example.aboutworker.util.DebugUtils;
+import com.example.aboutwork.event.AfterCommitEvent;
+import com.example.aboutwork.model.PdBundleItemSku;
+import com.example.aboutwork.repository.PdBundleItemSkuRepository;
+import com.example.aboutwork.service.TxService;
+import com.example.aboutwork.util.TxDebugUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,18 +30,18 @@ public class TxServiceImpl implements TxService {
     @Override
     @Transactional
     public void txA() {
-        DebugUtils.showTransactionStatus("txA");
+        TxDebugUtils.showTransactionStatus("txA");
         PdBundleItemSku itemSku = new PdBundleItemSku();
         itemSku.setItemId(1223234L);
         itemSku.setSkuId(21347L);
         repository.save(itemSku);
-        context.publishEvent(new AfterCommitEvent(itemSku,"txA"));
+        context.publishEvent(new AfterCommitEvent(itemSku, "txA"));
     }
 
     @Override
     public void txB() {
         PdBundleItemSku pdBundleItemSku = new PdBundleItemSku();
-        DebugUtils.showTransactionStatus("txB");
+        TxDebugUtils.showTransactionStatus("txB");
         repository.save(pdBundleItemSku);
         txC();
     }

@@ -1,4 +1,4 @@
-package com.example.aboutworker.model;
+package com.example.aboutwork.model;
 
 
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class PdBundleItemSku implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_pd_bundle_manager_id_seq")
     private Long id;
     @Column(name = "item_id")
-    private Long itemId=4l;
+    private Long itemId = 4l;
     @Column(name = "sku_id")
     private Long skuId = 2l;
     @Column(name = "bundle_sale_price")
@@ -36,8 +36,8 @@ public class PdBundleItemSku implements Serializable {
     @Column(name = "creator")
     private Long creator = 1l;
     @Column(name = "updater")
-    private Long updater=1l;
+    private Long updater = 1l;
     @Column(name = "update_time")
-    private Date updateTime=new Date();
+    private Date updateTime = new Date();
 
 }

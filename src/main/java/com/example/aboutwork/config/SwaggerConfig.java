@@ -1,4 +1,4 @@
-package com.example.aboutworker.config;
+package com.example.aboutwork.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
