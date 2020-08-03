@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class TxHandleServiceImpl extends BeanSelfAware implements TxHandleService {
+public class TxHandleServiceImpl extends BeanSelfAware<TxHandleServiceImpl> implements TxHandleService {
 
 
     @Override
     public void txA() {
-        TxHandleService self = (TxHandleService) getSelf();
+        TxHandleService self = getSelf();
         self.txB();
         System.err.println(1);
     }
