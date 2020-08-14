@@ -21,8 +21,8 @@ public class TestConfig {
 
 
     final public Object findObject() {
-//        return getObject();
-        return new Object();
+        return getObject();
+//        return new Object();
     }
 
 
