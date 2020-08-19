@@ -1,6 +1,7 @@
 package com.example.aboutwork.controller;
 
 
+import com.example.aboutwork.queue.TransferQueueDemo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TransferQueue;
 
 @RestController
@@ -63,5 +65,24 @@ public class TransferQueueController {
     @GetMapping("poll")
     public Object poll() {
         return transferQueue.poll();
+    }
+
+    @GetMapping("singleProducer")
+    public void singleProducer() {
+        TransferQueueDemo queue = (TransferQueueDemo) transferQueue;
+        queue.singleProducer();
+    }
+
+    @GetMapping("mutProducer")
+    public void mutProducer() {
+        TransferQueueDemo queue = (TransferQueueDemo) transferQueue;
+        queue.mutProducer();
+    }
+
+
+    @GetMapping("mutConsumer")
+    public void mutConsumer() throws InterruptedException {
+        TransferQueueDemo queue = (TransferQueueDemo) transferQueue;
+        queue.mutConsumer();
     }
 }
