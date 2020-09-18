@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.LockSupport;
 
 @Component("transferQueueDemo")
 public class TransferQueueDemo extends LinkedTransferQueue<Integer> {

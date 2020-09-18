@@ -42,23 +42,4 @@ public class MyTxSynchronization extends TransactionSynchronizationAdapter{
         actions.remove();
     }
 
-
-//    private static class MyTransactionSynchronization extends TransactionSynchronizationAdapter {
-//
-//        private MyTransactionSynchronization() {
-//        }
-//
-//        public static MyTransactionSynchronization getInstance() {
-//            return MyTransactionSynchronizationHolder.INSTANCE;
-//        }
-//
-//
-//
-//    }
-//
-//    private static class MyTransactionSynchronizationHolder {
-//        private static final MyTransactionSynchronization INSTANCE = new MyTransactionSynchronization();
-//    }
-
-
 }

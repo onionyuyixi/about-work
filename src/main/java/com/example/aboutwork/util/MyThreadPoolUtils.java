@@ -1,11 +1,10 @@
 package com.example.aboutwork.util;
 
+import io.netty.util.concurrent.DefaultThreadFactory;
 import lombok.Getter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.ThreadPoolExecutor;
-
-import io.netty.util.concurrent.DefaultThreadFactory;
 
 @Getter
 public class MyThreadPoolUtils {
