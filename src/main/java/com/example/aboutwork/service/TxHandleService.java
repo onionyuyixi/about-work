@@ -8,6 +8,4 @@ public interface TxHandleService  {
     void txB();
 
 
-    Object testTxManager();
-
 }

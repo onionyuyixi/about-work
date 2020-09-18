@@ -11,13 +11,13 @@ import org.springframework.util.Assert;
 
 @Slf4j
 @Component
-public class MyTxSynchronization {
+public class MyTxSynchronization extends TransactionSynchronizationAdapter{
 
 
     private static final FastThreadLocal<FastThreadLocalThread> actions = new FastThreadLocal();
 
     public void executeAfterTxCompletion(Runnable runnable) {
-        TransactionSynchronizationManager.registerSynchronization(MyTransactionSynchronization.getInstance());
+        TransactionSynchronizationManager.registerSynchronization(this);
         FastThreadLocalThread fastThreadLocalThread = wrapRunnable(runnable);
         actions.set(fastThreadLocalThread);
     }
@@ -29,34 +29,36 @@ public class MyTxSynchronization {
 
     }
 
-
-    private static class MyTransactionSynchronization extends TransactionSynchronizationAdapter {
-
-        private MyTransactionSynchronization() {
+    @Override
+    public void afterCommit() {
+        FastThreadLocalThread thread = actions.getIfExists();
+        if (thread != null) {
+            thread.start();
         }
-
-        public static MyTransactionSynchronization getInstance() {
-            return MyTransactionSynchronizationHolder.INSTANCE;
-        }
-
-        @Override
-        public void afterCommit() {
-            FastThreadLocalThread thread = actions.getIfExists();
-            if (thread != null) {
-                thread.start();
-            }
-        }
-
-        @Override
-        public void afterCompletion(int status) {
-            actions.remove();
-        }
-
     }
 
-    private static class MyTransactionSynchronizationHolder {
-        private static final MyTransactionSynchronization INSTANCE = new MyTransactionSynchronization();
+    @Override
+    public void afterCompletion(int status) {
+        actions.remove();
     }
+
+
+//    private static class MyTransactionSynchronization extends TransactionSynchronizationAdapter {
+//
+//        private MyTransactionSynchronization() {
+//        }
+//
+//        public static MyTransactionSynchronization getInstance() {
+//            return MyTransactionSynchronizationHolder.INSTANCE;
+//        }
+//
+//
+//
+//    }
+//
+//    private static class MyTransactionSynchronizationHolder {
+//        private static final MyTransactionSynchronization INSTANCE = new MyTransactionSynchronization();
+//    }
 
 
 }
