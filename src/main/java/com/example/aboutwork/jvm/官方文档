@@ -1,0 +1,78 @@
+1 Native Memory Tracking
+
+    JVM配置命令
+    -XX:NativeMemoryTracking=[off | summary | detail]
+
+    off     NMT is turned off by default.
+
+    summary Collect only memory usage aggregated by subsystem.
+
+    detail  Collect the memory usage by individual call sites.
+
+    JVM查看命令
+    jcmd pid VM.native_memory summary(可选 detail | baseline | summary.diff | detail.diff | shutdown) scale=GB(KB | MB)
+
+    注意点
+    Enabling NMT causes a 5% -10% performance overhead.
+
+
+2 jmap
+
+
+3 Diagnostic Tools
+
+    3.1 JDK Mission Control
+        JDK Mission Control (JMC) is a production-time profiling and diagnostics tool. It includes tools to monitor and manage your Java application with very small performance overhead.
+        JMC's very small performance overhead is a result of its tight integration with the HotSpot VM. JMC functionality is always available on-demand,
+        and its small performance overhead is only in effect while the tools are running
+        This approach also eliminates the problem of the observer effect, which occurs when monitoring tools alter the execution characteristics of the system.
+        JMC enables you to troubleshoot issues and identify root causes and bottlenecks.
+        These properties make the JMC tool ideal for applications running in production.
+
+    3.2 jcmd
+        a 單用jcmd相當於jps -v
+        b A special command jcmd <process id/main class> PerfCounter.print --->prints all performance counters in the process.
+        c jcmd MyProgram help Thread.print ----> Print all threads with stacktraces.
+        d jcmd pid VM.version  jdk信息
+        e jcmd pid VM.system_properties  虚拟机的系统参数
+        f jcmd pid VM.flags  获取jvm的配置参数
+            eg:
+            jcmd 9316 VM.flags
+            9316:
+            -XX:-BytecodeVerificationLocal -XX:-BytecodeVerificationRemote -XX:CICompilerCount=3 -XX:ConcGCThreads=2 -XX:+FlightRecorder
+            -XX:G1ConcRefinementThreads=6 -XX:G1HeapRegionSize=1048576 -XX:GCDrainStackTarg
+            etSize=64 -XX:+HeapDumpOnOutOfMemoryError -XX:InitialHeapSize=266338304 -XX:+ManagementServer
+            -XX:MarkStackSize=4194304 -XX:MaxHeapSize=4248829952 -XX:MaxNewSize=2549088256 -XX:MinHeapDeltaBytes=1048576
+            -XX:NativeMemoryTracking=detail -XX:NonNMethodCodeHeapSize=6973028 -XX:NonProfiledCodeHeapSize=244685212 -XX:+PrintNMTStatistics
+            -XX:ProfiledCodeHeapSize=0 -XX:ReservedCodeCacheSize=251658240 -XX:+Segmente
+            dCodeCache -XX:StartFlightRecording=dumponexit=false -XX:TieredStopAtLevel=1 -XX:+UnlockDiagnosticVMOptions -XX:+UseCompressedClassPointers
+            -XX:+UseCompressedOops -XX:+UseFastUnorderedTimeStamps -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation
+
+        g jcmd <process id/main class> GC.class_histogram
+
+        h jcmd GC.heap_dump filename
+
+        i jcmd <process id/main class> GC.class_histogram filename
+
+        j Follow these steps to detect a memory leak:
+
+          Start the JVM with summary or detail tracking using the command line option: -XX:NativeMemoryTracking=summary or -XX:NativeMemoryTracking=detail.
+          Establish an early baseline. Use NMT baseline feature to get a baseline to compare during development and maintenance by running: jcmd <pid> VM.native_memory baseline.
+          Monitor memory changes using: jcmd <pid> VM.native_memory detail.diff.
+          If the application leaks a small amount of memory, then it may take a while to show up.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

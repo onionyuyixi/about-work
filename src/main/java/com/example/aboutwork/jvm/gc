@@ -1,0 +1,13 @@
+1 https://www.oracle.com/technical-resources/articles/java/g1gc.html
+
+
+2 Concurrent Mark Sweep (CMS) Collector
+    The CMS collector attempts to reduce pause times due to major collections by using separate garbage collector threads
+    to trace the reachable objects concurrently with the execution of the application threads. During each major collection cycle,
+    the CMS collector pauses all the application threads for a brief period at the beginning of the collection and
+    again toward the middle of the collection. The second pause tends to be the longer of the two pauses.
+    Multiple threads are used to do the collection work during both pauses. The remainder of the collection
+    (including most of the tracing of live objects and sweeping of unreachable objects is done with one or
+    more garbage collector threads that run concurrently with the application. Minor collections can
+    interleave with an ongoing major cycle, and are done in a manner similar to the parallel collector
+    (in particular, the application threads are stopped during minor collections).
