@@ -1,6 +1,10 @@
 spring:
   main:
     lazy-initialization: false
+  devtools:
+    restart:
+      #默认就是true
+      enabled: true
   datasource:
     url: jdbc:mysql://localhost:3306/yuyixi
     username: root
