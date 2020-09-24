@@ -16,3 +16,18 @@ StatisticFilter ---->stat
           config:
             delete-allow: true
             drop-able-allow: false
+
+Java启动参数配置方式
+-Ddruid.log.stmt.executableSql=true
+
+5. 慢SQL记录
+StatFilter属性slowSqlMillis用来配置SQL慢的标准，执行时间超过slowSqlMillis的就是慢。slowSqlMillis的缺省值为3000，也就是3秒。
+
+<bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+    <property name="slowSqlMillis" value="10000" />
+    <property name="logSlowSql" value="true" />
+</bean>
+
+
+
+
