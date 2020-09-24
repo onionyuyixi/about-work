@@ -1,0 +1,18 @@
+参考链接
+https://www.bookstack.cn/read/Druid/ffdd9118e6208531.md
+
+WallFilter  --->wall
+StatisticFilter ---->stat
+
+ 我以前未曾使用过的配置
+ test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      filters: stat,wall
+      filter:
+        wall:
+          enabled: true
+          db-type: mysql
+          config:
+            delete-allow: true
+            drop-able-allow: false
