@@ -1,11 +1,10 @@
 package com.example.aboutwork.executors;
 
-import lombok.Data;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Data
 public class TestThreadExecutor {
 
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
@@ -20,46 +19,64 @@ public class TestThreadExecutor {
     private static final int TERMINATED = 3 << COUNT_BITS;
 
     // Packing and unpacking ctl
+
+    /**
+     * 结果只有~CAPACITY 和 0 两种
+     * @param c
+     * @return
+     */
     private static int runStateOf(int c) {
-        return c & ~CAPACITY;
+        return c & ~CAPACITY;     //按小于0 表示当前的c的高位也是1 是一个负数 结果为~CAPACITY表明状态RUNNING  否则得到的结果都是0
     }
 
+    /**
+     * 永远是个非负数
+     * @param c
+     * @return
+     */
     private static int workerCountOf(int c) {
-        return c & CAPACITY;
+        return c & CAPACITY;  //案大于0 的时候 CAPACITY 二进制全是1  计算结果就是c本身
+        // 小于0的时候 则等于 CAPACITY-c
     }
 
+    /**
+     * 结果是 rs + wc 之和
+     * @param rs  ~CAPACITY / 0
+     * @param wc  非负数
+     * @return
+     */
     private static int ctlOf(int rs, int wc) {
         return rs | wc;
     }
 
     @Test
-    public void test1() {
-        System.err.println(Integer.toBinaryString(ctl.get()));
-        System.err.println((ctl.get()));
-        System.err.println(Integer.toBinaryString(CAPACITY));
-        System.err.println(Integer.toBinaryString(CAPACITY).length());
-        System.err.println(Integer.toBinaryString(~CAPACITY));
-        System.err.println((CAPACITY));
-        System.err.println(Integer.toBinaryString(CAPACITY+1));
-        System.err.println(CAPACITY+1);
-        System.err.println(Integer.toBinaryString(RUNNING));
-        System.err.println(RUNNING);
-        System.err.println(Integer.toBinaryString(SHUTDOWN));
-        System.err.println(SHUTDOWN);
-        System.err.println(Integer.toBinaryString(STOP));
-        System.err.println(STOP);
-        System.err.println(Integer.toBinaryString(TIDYING));
-        System.err.println(TIDYING);
-        System.err.println(Integer.toBinaryString(TERMINATED));
-        System.err.println(TERMINATED);
-        System.err.println(Integer.toBinaryString(runStateOf(1)));
-        System.err.println(Integer.toBinaryString(runStateOf(~CAPACITY)));
+    public void testRunStateOf(){
+        int a = 100;
+        int b = -100;
+        Assert.assertEquals(runStateOf(a),0);
+        Assert.assertEquals(runStateOf(b),~CAPACITY);
+    }
 
-        System.err.println(Integer.toBinaryString(runStateOf(1)|workerCountOf(1)));
-        System.err.println(Integer.toBinaryString(runStateOf(1)|workerCountOf(1)));
-        System.err.println(Integer.toBinaryString((1&~CAPACITY) | (1&CAPACITY)));
-        System.err.println(Integer.toBinaryString((2&~CAPACITY) | (2&CAPACITY)));
-        System.err.println(Integer.toBinaryString((10&~CAPACITY) | (10&CAPACITY)));
+    @Test
+    public void testWorkerCountOf(){
+        int a = 100;
+        int b = -100;
+        Assert.assertEquals(workerCountOf(a),a);
+        Assert.assertEquals(workerCountOf(b)-1,CAPACITY-100);
+    }
+
+    @Test
+    public void testCltOf(){
+        int b = 10;
+        Assert.assertEquals(ctlOf(0,b),rsPlusWc(0,b));
+        int f = 0;
+        Assert.assertEquals(ctlOf(~CAPACITY,f),rsPlusWc(~CAPACITY,f));
+        int g = 100;
+        Assert.assertEquals(ctlOf(~CAPACITY,g),rsPlusWc(~CAPACITY,g));
+    }
+
+    private int rsPlusWc(int rs , int wc){
+        return rs+wc;
     }
 
 }
