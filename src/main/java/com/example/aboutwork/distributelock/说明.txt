@@ -1,0 +1,107 @@
+1 InterProcessMutex  可重入锁  有序的（公平的）
+ * A re-entrant mutex that works across JVMs. Uses Zookeeper to hold the lock. All processes in all JVMs that
+ * use the same lock path will achieve an inter-process critical section. Further, this mutex is
+ * "fair" - each user will get the mutex in the order requested (from ZK's point of view)
+
+ 数据节点 LockData （所属线程owningThread lockPath lockCount）
+ 用ConcurrentHashMap<Thread,LockData>容器 用来做缓存
+ 而lock的实际操作来源于 变量 private final LockInternals internals;
+
+
+ 2 LockInternals  封装了一个特定类型的client  core method attemptLock()  利用了driver去创建节点 处理节点
+    // WatcherRemoveCuratorFramework extends CuratorFramework  多了一个 void removeWatchers() 方法
+    private final WatcherRemoveCuratorFramework     client;
+    private final String                            path;
+    private final String                            basePath;
+    // public interface LockInternalsDriver extends LockInternalsSorter
+    //用在判断节点是否已经被watch (getsTheLock方法)
+    //创建新的lock(实际上就是新添加一个顺序增加的文件路径节点)
+    //client.create().creatingParentContainersIfNeeded().withProtection().withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath(path);
+    //client.create().creatingParentContainersIfNeeded().withProtection().withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath(path,lockNodeBytes);
+    //重整节点顺序
+    private final LockInternalsDriver               driver;
+    private final String                            lockName;
+    private final AtomicReference<RevocationSpec>   revocable = new AtomicReference<RevocationSpec>(null);
+    private final CuratorWatcher                    revocableWatcher = new CuratorWatcher()
+     {
+            @Override
+            public void process(WatchedEvent event) throws Exception
+            {
+                if ( event.getType() == Watcher.Event.EventType.NodeDataChanged )
+                {
+                    checkRevocableWatcher(event.getPath());
+                }
+            }
+        };
+    private final Watcher watcher = new Watcher()
+         {
+             @Override
+             public void process(WatchedEvent event)
+             {
+                 client.postSafeNotify(LockInternals.this);
+             }
+         };
+
+3 InterProcessMultiLock  原子性的批量处理多个lock  一荣俱荣 一损俱损
+    里面 private final List<InterProcessLock> locks 可以以管窥豹
+
+4 InterProcessReadWriteLock  依旧是fair lock 严格的先后顺序
+    A re-entrant read/write mutex that works across JVMs. Uses Zookeeper to hold the lock. All processes
+    in all JVMs that use the same lock path will achieve an inter-process critical section. Further, this mutex is
+    "fair" - each user will get the mutex in the order requested (from ZK's point of view).
+
+    读写lock的区别 存在写lock的时候 读lock无法获取操作权限  而存在读lock 写lock仍可以获取操作权限  即写lock具有最高权限
+      This lock allows both readers and writers to reacquire read or write locks in the style of a
+     *    re-entrant lock. Non-re-entrant readers are not allowed until all write locks held by the
+     *    writing thread/process have been released. Additionally, a writer can acquire the read lock, but not
+     *    vice-versa. If a reader tries to acquire the write lock it will never succeed
+
+    core method
+    A readLockPredicate 读lock的判断
+    B 读写的不同在于 SortingLockInternalsDriver driver的实现不同  写的时候 参考标准的就行  读的时候则必须要考虑到write lock是否存在  是否是当前线程所属
+
+5  InterProcessSemaphoreMutex  依赖变量  private final InterProcessSemaphoreV2 semaphore; InterProcessSemaphoreV2又依赖了 private final InterProcessMutex lock;
+
+6 InterProcessSemaphoreV2
+
+   core construct
+   private InterProcessSemaphoreV2(CuratorFramework client, String path, int maxLeases, SharedCountReader count){
+
+    this.client = client.newWatcherRemoveCuratorFramework();
+           path = PathUtils.validatePath(path);
+           lock = new InterProcessMutex(client, ZKPaths.makePath(path, LOCK_PARENT));
+           this.maxLeases = (count != null) ? count.getCount() : maxLeases;
+           leasesPath = ZKPaths.makePath(path, LEASE_PARENT);
+
+           if ( count != null )
+           {
+               count.addListener
+                   (
+                       new SharedCountListener()
+                       {
+                           @Override
+                           public void countHasChanged(SharedCountReader sharedCount, int newCount) throws Exception
+                           {
+                               InterProcessSemaphoreV2.this.maxLeases = newCount;
+                               client.postSafeNotify(InterProcessSemaphoreV2.this);
+                           }
+
+                           @Override
+                           public void stateChanged(CuratorFramework client, ConnectionState newState)
+                           {
+                               // no need to handle this here - clients should set their own connection state listener
+                           }
+                       }
+                   );
+           }
+
+   }
+
+   core method
+   a->  public Lease acquire() throws Exception
+        {
+            Collection<Lease> leases = acquire(1, 0, null);
+            return leases.iterator().next();
+        }
+
+   b->
