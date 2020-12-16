@@ -20,6 +20,26 @@ public class LogTest {
         }
     }
 
+    @Test
+    public void testWarn(){
+        try {
+
+            sum();
+        }catch (Exception e){
+            LogTest.warn("data {} error",1,e);
+        }
+    }
+
+    @Test
+    public void testInfo(){
+        try {
+
+            sum();
+        }catch (Exception e){
+            LogTest.info("data {} error",1,e);
+        }
+    }
+
     private void sum(){
         int a  = 1/0;
     }
