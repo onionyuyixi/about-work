@@ -40,6 +40,17 @@ public class LogTest {
         }
     }
 
+    @Test
+    public void testInfo1(){
+        try {
+
+            sum();
+        }catch (Exception e){
+            LogTest.info("data {} error...",1,e);
+            LogTest.info("data {} error   ",1,e);
+        }
+    }
+
     private void sum(){
         int a  = 1/0;
     }
