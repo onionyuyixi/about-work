@@ -4,10 +4,10 @@ package com.example.aboutwork.callBack;
 import lombok.SneakyThrows;
 import org.springframework.util.StringUtils;
 
-public class MyProcessorImpl implements ProcessorInterface<UseMyCallBack> {
+public class MyProcessorImpl implements ProcessorInterface<UseMyProcessor> {
 
     @Override
-    public UseMyCallBack beforeCall(UseMyCallBack useMyCallBack) {
+    public UseMyProcessor beforeCall(UseMyProcessor useMyCallBack) {
         System.err.println("before call invoke ........");
         useMyCallBack.setBefore("before use ");
         String use = useMyCallBack.getUse();
@@ -16,7 +16,7 @@ public class MyProcessorImpl implements ProcessorInterface<UseMyCallBack> {
 
     @SneakyThrows
     @Override
-    public UseMyCallBack afterCall(UseMyCallBack useMyCallBack) {
+    public UseMyProcessor afterCall(UseMyProcessor useMyCallBack) {
         String use = useMyCallBack.getUse();
         if (StringUtils.isEmpty(use)){
             throw new Exception("UseMyCallBack 的 use方法 没有生效");
