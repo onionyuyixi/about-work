@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
-public class TestMyCallBack {
+public class TestMyProcessor {
 
     public final String CLASSES = "classes";
     public final String _CLASS = ".class";
@@ -32,7 +32,7 @@ public class TestMyCallBack {
     @Test
     public void 测试回调() {
         //回调前处理
-        Object obj = callBackMap.get("UseMyCallBack");
+        Object obj = callBackMap.get("UseMyProcessor");
         if (Objects.nonNull(obj)) {
             UseMyProcessor useMyProcessor = (UseMyProcessor) obj;
             String typeName = useMyProcessor.getClass().getTypeName();

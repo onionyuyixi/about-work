@@ -1,7 +1,6 @@
 package com.example.aboutwork.log;
 
 import lombok.Data;
-import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

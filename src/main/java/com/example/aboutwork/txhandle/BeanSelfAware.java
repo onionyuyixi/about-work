@@ -1,8 +1,6 @@
 package com.example.aboutwork.txhandle;
 
 
-import com.google.common.base.Objects;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
