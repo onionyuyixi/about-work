@@ -1,4 +1,8 @@
 spring:
+  banner:
+    image:
+      location: banner.txt #自定义banner
+  allowBeanDefinitionOverriding: true
   main:
     lazy-initialization: false
   devtools:
