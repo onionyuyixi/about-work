@@ -11,11 +11,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JvmController {
 
 
-            ConcurrentHashMap<Object, Object> map = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Object, Object> map = new ConcurrentHashMap<>();
+
     @GetMapping("doLoop")
     public void doLoop() {
         while (true) {
-            map.put(new Object(),new Object());
+            map.put(new Object(), new Object());
         }
     }
 
