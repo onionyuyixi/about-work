@@ -62,7 +62,7 @@ public class 優先隊列説明 {
 //                siftDownComparable(i, moved, array, n);
 //            else
 //                siftDownUsingComparator(i, moved, array, n, cmp);
-//            if (array[i] == moved) {
+//            if (array[i] == moved) { 如果排序偶然遇到值相等的情況 則修改父節點
 //                if (cmp == null)
 //                    siftUpComparable(i, moved, array);
 //                else
