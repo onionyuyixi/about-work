@@ -20,7 +20,7 @@ public class 監聽簡易説明 implements Runnable {
         while (flag) {
             try {
 
-            //
+            // 去實現邏輯 如果這裏引用一個delayed queue 則定時任務可成也
             }catch (Exception e){
                 //遇到error的時候 退出循環
                 flag = false;
