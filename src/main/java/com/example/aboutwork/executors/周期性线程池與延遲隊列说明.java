@@ -3,7 +3,9 @@ package com.example.aboutwork.executors;
 public class 周期性线程池與延遲隊列说明 {
 
     //DelayedWorkQueue  自定义的特殊延迟queue
+    //A DelayedWorkQueue is based on a heap-based data structure  like those in DelayQueue and PriorityQueue,
     //except that  every ScheduledFutureTask also records its index into the  heap array (task中会记录他们在heap中的index)
+
     //延遲隊列可以實現定時任務
 
 //    核心代碼部分 如何實現的延遲
