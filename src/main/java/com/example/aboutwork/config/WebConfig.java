@@ -18,8 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setThreadNamePrefix("yuyixi_thread_pool_");
         int processors = Runtime.getRuntime().availableProcessors();
-        executor.setCorePoolSize(2 * processors);
-        executor.setMaxPoolSize(100);
+        executor.setCorePoolSize(10 * processors);
+        executor.setMaxPoolSize(500);
         executor.setQueueCapacity(4 * processors);
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         executor.initialize();

@@ -18,7 +18,7 @@ object TypeCase extends App{
      type X =TypeUser
    }
 
-  typeSample.test(new TypeUser("typeUser"))
+  typeSample.test(TypeUser("typeUser"))
 
    val intTypeCase = new IntTypeCase
   intTypeCase.test(100)
