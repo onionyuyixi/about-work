@@ -10,7 +10,7 @@ public class UpperImpl implements Upper,A {
     public void 测试向父类cast(){
         UpperImpl upperImpl = new UpperImpl();
         if(upperImpl instanceof  Upper){
-            Upper upper = (Upper) upperImpl;
+            Upper upper = upperImpl;
             upper.print();
         }
         if(upperImpl instanceof  A){
