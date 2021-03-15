@@ -18,6 +18,7 @@ package com.example.aboutwork;
  */
 
 
+import org.junit.Test;
 import sun.misc.BASE64Encoder;
 
 import javax.crypto.Mac;
@@ -112,11 +113,19 @@ public class HmacSHA1Util {
         finalUrl.append(returnStr);
         finalUrl.append("&");
         finalUrl.append(url);
-        System.out.println("加密前明文 :"+sb.toString());
-        System.out.println("加密使用KEY :"+appkey+"&");
-        System.out.println("加密后密文："+sign);
-        System.out.println("需要传递的参数示例:"+finalUrl.toString());
+        System.out.println("加密前明文 :" + sb.toString());
+        System.out.println("加密使用KEY :" + appkey + "&");
+        System.out.println("加密后密文：" + sign);
+        System.out.println("需要传递的参数示例:" + finalUrl.toString());
 
+    }
+
+    @Test
+    public void test1() {
+        Integer a = -128;
+        Integer b = -128;
+        System.err.println(a == b);
+        System.err.println(Math.round(-1.5));
     }
 
 }
